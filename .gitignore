@@ -2,4 +2,3 @@
 .vscode/
 bin/
 obj/
-telegram_api_worker/appsettings.json

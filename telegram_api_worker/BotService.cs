@@ -6,10 +6,10 @@ namespace TelegramApiWorker;
 internal class BotService : IHostedService {
   private readonly TelegramBotClient _client;
   internal async Task Handle(ITelegramBotClient client, Update update, CancellationToken token) {
-    if (update.ChatMember is not ChatMemberUpdated memberUpdated) {
+    if (update.Message is not Message message) {
       return;
     }
-    await client.SendTextMessageAsync(memberUpdated.Chat.Id, "Hello world!!!");
+    await client.SendTextMessageAsync(message.Chat.Id, "Hello world!!!");
   }
   internal Task HandleError(ITelegramBotClient client, Exception exception, CancellationToken token) {
     return Task.CompletedTask;
@@ -24,7 +24,7 @@ internal class BotService : IHostedService {
     await _client.CloseAsync();
   }
 
-  internal BotService(IConfiguration configuration) {
+  public BotService(IConfiguration configuration) {
     _client = new(configuration["TelegramToken"]);
   }
 }
