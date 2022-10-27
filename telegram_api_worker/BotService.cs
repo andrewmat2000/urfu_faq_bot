@@ -1,15 +1,22 @@
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
+using HttpClient = Asd.HttpLib.HttpClient;
+
 namespace TelegramApiWorker;
 
 internal class BotService : IHostedService {
   private readonly TelegramBotClient _client;
+  private readonly HttpClient _httpClient = new("http://deeppavlov/");
   internal async Task Handle(ITelegramBotClient client, Update update, CancellationToken token) {
     if (update.Message is not Message message) {
       return;
     }
-    await client.SendTextMessageAsync(message.Chat.Id, "Hello world!!!");
+    var answer = _httpClient.Post<string>("ask");
+    if (!answer) {
+      await client.SendTextMessageAsync(message.Chat.Id, "Что то сломаласё.");
+    }
+    await client.SendTextMessageAsync(message.Chat.Id, answer);
   }
   internal Task HandleError(ITelegramBotClient client, Exception exception, CancellationToken token) {
     return Task.CompletedTask;
