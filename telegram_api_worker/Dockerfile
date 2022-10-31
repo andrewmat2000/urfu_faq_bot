@@ -13,11 +13,12 @@ RUN dotnet build TelegramApiWorker.csproj -c Release -o /app
 FROM build AS publish
 RUN dotnet publish -c Release -p:PublishReadyToRun=true --self-contained=true -r linux-x64 -o /app
 
-FROM ubuntu:22.04 AS final
+# RUN apt update && apt install -qqq libicu70
+# WORKDIR /opt/TelegramApiWorker
 
-RUN apt update && apt install -qqq libicu70
+# COPY --from=publish /app .
 
-COPY --from=publish /app /opt/TelegramApiWorker
-WORKDIR /opt/TelegramApiWorker
+CMD "/app/TelegramApiWorker"
 
-CMD [ "/opt/TelegramApiWorker/TelegramApiWorker" ]
+# FROM ubuntu:22.04 AS final
+

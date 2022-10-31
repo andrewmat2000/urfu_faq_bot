@@ -1,5 +1,5 @@
 import abc
-from sys import argv
+from flask import request
 
 from deeppavlov import train_model, build_model, configs
 from deeppavlov.core.common.file import read_json
@@ -63,7 +63,10 @@ model = AmmChatBot("./configs/tfidf_logreg_autofaq.json", "./data/dataset_vsu_qa
 
 app = Flask(__name__)
 
-@app.route('/ask/')
-def ask(question):
-    answer, is_valid = model.ask(question)
+@app.route('/ask/', methods=['POST'])
+def ask():
+    input = request.get_data(as_text=True)
+    answer, is_valid = model.ask(input)
     return answer
+
+app.run(debug=False, host="0.0.0.0", port=80)
