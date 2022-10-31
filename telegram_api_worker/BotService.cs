@@ -25,8 +25,9 @@ internal class BotService : IHostedService {
     if (!answer) {
       await client.SendTextMessageAsync(message.Chat.Id, "Что то сломаласё.");
     }
-    _logger.LogInformation("Answer text: {}", answer.Value);
-    await client.SendTextMessageAsync(message.Chat.Id, answer);
+    var answerText = answer.Value.Replace("\\n", "\n");
+    _logger.LogInformation("Answer text: {}", answerText);
+    await client.SendTextMessageAsync(message.Chat.Id, answerText);
   }
   internal async Task HandleError(ITelegramBotClient client, Exception exception, CancellationToken token) {
     _logger.LogError("{}", exception.ToString());
