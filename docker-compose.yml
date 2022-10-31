@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+  deeppavlov:
+    hostname: deeppavlov
+    build: ./deeppavlov/
+
+    restart: always
+    networks:
+      - default
+
+  telegram_api:
+    build: ./telegram_api_worker/
+
+    restart: always
+    networks:
+      - default
+    depends_on:
+      - deeppavlov
+
+networks:
+  default: {}
