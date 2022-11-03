@@ -2,7 +2,7 @@ version: '3.5'
 services:
   deeppavlov:
     hostname: deeppavlov
-    build: ./deeppavlov/
+    build: ./urfu_faq_deeppavlov/
 
     restart: always
     networks:
