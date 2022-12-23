@@ -37,9 +37,6 @@ async def answer(data: dict = data_body) -> dict:
     loop = asyncio.get_event_loop()
     bot.input_queue.put(data)
     response: dict = await loop.run_in_executor(None, bot.output_queue.get)
-    if ";" in response["response"]["text"]:
-        response["response"]["text"] = response["response"]["text"].split(';')[0]
-
     return response
 
 async def run_tg():
