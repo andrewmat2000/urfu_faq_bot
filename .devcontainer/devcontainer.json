@@ -4,7 +4,7 @@
 	"name": "Existing Dockerfile",
 	"build": {
 		// Sets the run context to one level up instead of the .devcontainer folder.
-		"context": "..",
+		"context": ".",
 		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
 		"dockerfile": "Dockerfile"
 	},
@@ -26,7 +26,8 @@
 	
 	"settings": {
 		"python.venvFolders": ["/base/venv/"],
-		"remote.autoForwardPorts": false
+		"remote.autoForwardPorts": false,
+		"python.venvPath": "/base/venv/bin"
 	},
 
 	// Configure tool-specific properties.

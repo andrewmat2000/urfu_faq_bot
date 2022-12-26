@@ -1,4 +1,5 @@
 import asyncio
+from threading import Thread
 import uvicorn
 
 from os import environ
@@ -39,10 +40,11 @@ async def answer(data: dict = data_body) -> dict:
     response: dict = await loop.run_in_executor(None, bot.output_queue.get)
     return response
 
-async def run_tg():
-    interact_model_by_telegram(model_config, token=environ["TELEGTAM_TOKEN"])
+def run_tg():
+    interact_model_by_telegram(model_config, token=environ["TELEGRAM_TOKEN"])
 
-run_tg()
+thread = Thread(target=run_tg)
+thread.start()
 
 uvicorn.run(app=app, host=host, port=port)
 
