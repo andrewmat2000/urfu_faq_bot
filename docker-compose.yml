@@ -9,7 +9,7 @@ services:
          - ./src/data:/base/data
          - ./src/configs:/base/configs
 
-   telergram:
+   telegram:
       build: ./src/telegram_bot
       restart: unless-stopped
       environment:
