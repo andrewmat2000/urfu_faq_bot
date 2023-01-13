@@ -11,7 +11,7 @@ from deeppavlov import train_model
 from deeppavlov.utils.telegram import interact_model_by_telegram
 from deeppavlov.utils.alice.request_parameters import data_body
 from deeppavlov.utils.alice.server import AliceBot
-from deeppavlov.utils.server import redirect_root_to_docs
+from deeppavlov.utils.server import redirect_root_to_docs 
 
 
 model_config="./configs/tfidf_logreg_autofaq.json"
@@ -28,7 +28,7 @@ input_q = Queue()
 output_q = Queue()
 
 bot = AliceBot(model_config, input_q, output_q)
-# bot._model = faq
+
 bot.start()
 
 redirect_root_to_docs(app, 'answer', endpoint, 'post')
@@ -38,6 +38,8 @@ async def answer(data: dict = data_body) -> dict:
     loop = asyncio.get_event_loop()
     bot.input_queue.put(data)
     response: dict = await loop.run_in_executor(None, bot.output_queue.get)
+    if response['response']["text"] == 'Welcome to DeepPavlov inference bot!':
+        response['response']['text'] = "Здравствуйте! Я чат-бот :) Возник вопрос по поступлению в магистратуру УрФУ? Задайте его мне, и я отвечу на него."
     return response
 
 def run_tg():
