@@ -1,18 +1,13 @@
 import asyncio
-from threading import Thread
 import uvicorn
-
-from os import environ
 
 from queue import Queue
 from fastapi import FastAPI
 
 from deeppavlov import train_model
-from deeppavlov.utils.telegram import interact_model_by_telegram
 from deeppavlov.utils.alice.request_parameters import data_body
 from deeppavlov.utils.alice.server import AliceBot
 from deeppavlov.utils.server import redirect_root_to_docs 
-
 
 model_config="./configs/tfidf_logreg_autofaq.json"
 
@@ -39,14 +34,8 @@ async def answer(data: dict = data_body) -> dict:
     bot.input_queue.put(data)
     response: dict = await loop.run_in_executor(None, bot.output_queue.get)
     if response['response']["text"] == 'Welcome to DeepPavlov inference bot!':
-        response['response']['text'] = "Здравствуйте! Я чат-бот :) Возник вопрос по поступлению в магистратуру УрФУ? Задайте его мне, и я отвечу на него."
+        response['response']['text'] = "Здравствуйте! Я чат-бот :). Можете задать любой вопрос по магистратуре УрФу, и я постараюсь на него ответить."
     return response
-
-def run_tg():
-    interact_model_by_telegram(model_config, token=environ["TELEGRAM_TOKEN"])
-
-thread = Thread(target=run_tg)
-thread.start()
 
 uvicorn.run(app=app, host=host, port=port)
 
