@@ -1,9 +1,19 @@
 version: '3.5'
 services:
-  deeppavlov:
-    build: ./src/
-    ports:
-       - "80:80"
-    restart: always
-    environment:
-       - TELEGRAM_TOKEN=token
+   alice:
+      build: ./src/alice_bot
+      ports:
+         - "80:80"
+      restart: always
+      volumes:
+         - ./src/data:/base/data
+         - ./src/configs:/base/configs
+
+   telergram:
+      build: ./src/telegram_bot
+      restart: always
+      environment:
+         - TELEGRAM_TOKEN=token
+      volumes:
+         - ./src/data:/base/data
+         - ./src/configs:/base/configs
